@@ -31,10 +31,23 @@ export class Database {
 		this.#persist()
 	}
 
-	select(table) {
-    // procura no database a tabela, caso nao exista, retorna uma lista vazia
+	select(table, filters) {
+		// procura no database a tabela, caso nao exista, retorna uma lista vazia
 		let data = this.#database[table] ?? []
 
-    return data
+		if (filters) {
+			data = data.filter((row) => {
+				return Object.entries(filters).some(([key, value]) => {
+					return row[key].toLowerCase().includes(value.toLowerCase())
+				})
+			})
+		}
+
+		return data
 	}
 }
+
+/*
+ * .some() => utilizando para testar se algum dos valores bate com o que precisamos da nossa lista
+ * filters => faz um filtro na requisicao e verifica se o valor da chave especifica tem valor o solicitado, exemplo: (/tickets?status=closed -> 'status': 'closed' = true).
+ */

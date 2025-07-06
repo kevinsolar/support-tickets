@@ -11,9 +11,11 @@ export function routeHandler(request, response) {
 
 	if (route) {
 		const routeParams = request.url.match(route.path)
-		const { query } = routeParams.groups
+		// query recebe o valor do grupo com regex para ser extraido.
+    const { query } = routeParams.groups
 
-    console.log(extractQueryParams(query))
+    // verifica se o query retorna algo, caso retorna vamos chamar a funcao de extracao, passando como parametro o query, se o query nao tiver nada, passamos um objeto vazio
+    request.query = query ? extractQueryParams(query) : {}
 
 		return route.controller({ request, response, database })
 	}
