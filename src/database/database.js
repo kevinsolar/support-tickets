@@ -1,5 +1,4 @@
 import fs from "node:fs/promises"
-import { json } from "node:stream/consumers"
 
 const DATABASE_PATH = new URL("db.json", import.meta.url)
 
@@ -30,5 +29,12 @@ export class Database {
 		}
 
 		this.#persist()
+	}
+
+	select(table) {
+    // procura no database a tabela, caso nao exista, retorna uma lista vazia
+		let data = this.#database[table] ?? []
+
+    return data
 	}
 }
